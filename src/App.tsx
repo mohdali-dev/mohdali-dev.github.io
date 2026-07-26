@@ -4,7 +4,7 @@
  */
 
 import { useState } from "react";
-import { MotionConfig } from "motion/react";
+import { motion, useScroll, useSpring, MotionConfig } from "motion/react";
 import CustomCursor from "./components/CustomCursor";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
@@ -19,12 +19,31 @@ import Testimonials from "./components/Testimonials";
 import ContactCTA from "./components/ContactCTA";
 import Footer from "./components/Footer";
 
+function ScrollProgressBar() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
+  return (
+    <motion.div
+      className="fixed top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-amber-600 via-amber-500 to-amber-300 origin-left z-50 pointer-events-none shadow-[0_0_12px_rgba(245,158,11,0.6)]"
+      style={{ scaleX }}
+    />
+  );
+}
+
 export default function App() {
   const [contactOpen, setContactOpen] = useState(false);
 
   return (
     <MotionConfig reducedMotion="user">
       <div className="bg-black text-neutral-200 selection:bg-amber-600 selection:text-black">
+        {/* Top Scroll Reading Progress Bar */}
+        <ScrollProgressBar />
+
         {/* Custom Magnetic Cursor */}
         <CustomCursor />
 
@@ -37,11 +56,11 @@ export default function App() {
         {/* Tech Stack Marquee */}
         <TechStackTicker />
 
-        {/* Core Tech Bento Grid Section */}
-        <TechStack />
-
         {/* Expertises / Services */}
         <Services />
+
+        {/* Tech Stack Grid Section */}
+        <TechStack />
 
         {/* Selected 2x2 Work Grid */}
         <SelectedWork />

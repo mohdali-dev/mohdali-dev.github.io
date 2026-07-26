@@ -4,10 +4,7 @@ import {
   ShieldCheck,
   ExternalLink,
   Award,
-  ChevronDown,
-  ChevronUp,
   Sparkles,
-  Layers,
   BookOpen,
   CheckCircle2
 } from "lucide-react";
@@ -90,85 +87,6 @@ export const CERTIFICATIONS_DATA: Certification[] = [
     category: "ai",
     isFeatured: true,
     skills: ["Linear Algebra", "Multivariate Calculus", "PCA Dimensionality Reduction", "Optimization"]
-  },
-  // Additional Expandable Certifications
-  {
-    id: "ibm-data-science",
-    title: "IBM Data Science Professional Certificate",
-    issuer: "IBM Skills Network",
-    issuerBrand: "ibm",
-    year: "2025",
-    coursesCount: 12,
-    description: "Data analysis methodologies, SQL databases, Python modeling, data visualization with Seaborn, and machine learning capstones.",
-    credentialUrl: "https://coursera.org/verify/professional-cert/4SLKXEU93PSJ",
-    category: "data",
-    isFeatured: false,
-    skills: ["Python Data Science", "SQL & Databases", "Data Visualization", "Predictive Modeling"]
-  },
-  {
-    id: "google-data-analytics",
-    title: "Google Data Analytics Professional Certificate",
-    issuer: "Google Career Certificates",
-    issuerBrand: "google",
-    year: "2025",
-    coursesCount: 9,
-    description: "End-to-end data preparation, cleaning, exploratory analysis, SQL queries, Tableau dashboards, R programming, and case studies.",
-    credentialUrl: "https://coursera.org/verify/professional-cert/64KBZO9ESH2H",
-    category: "data",
-    isFeatured: false,
-    skills: ["SQL Data Wrangling", "R Programming", "Tableau Dashboards", "Data Cleaning"]
-  },
-  {
-    id: "google-ai-essentials",
-    title: "Google AI Essentials",
-    issuer: "Google Career Certificates",
-    issuerBrand: "google",
-    year: "2025",
-    coursesCount: 5,
-    description: "Hands-on AI workflows, prompt design strategies, productivity optimization with AI tools, and responsible AI implementation.",
-    credentialUrl: "https://coursera.org/verify/specialization/CVH5V9Q9K16W",
-    category: "genai",
-    isFeatured: false,
-    skills: ["AI Workflows", "Prompt Design", "Productivity Tools", "Responsible AI"]
-  },
-  {
-    id: "prompt-eng-vanderbilt",
-    title: "Prompt Engineering Specialization",
-    issuer: "Vanderbilt University",
-    issuerBrand: "vanderbilt",
-    year: "2025",
-    coursesCount: 3,
-    description: "Advanced prompt patterns, ChatGPT advanced data analysis, generative AI reasoning frameworks, and trustworthy AI integration.",
-    credentialUrl: "https://coursera.org/verify/specialization/42YQY53NY57W",
-    category: "genai",
-    isFeatured: false,
-    skills: ["Prompt Patterns", "LLM Reasoning", "ChatGPT Advanced Analysis", "Trustworthy AI"]
-  },
-  {
-    id: "software-eng-hkust",
-    title: "Software Engineering Specialization",
-    issuer: "Hong Kong University of Science and Technology",
-    issuerBrand: "hkust",
-    year: "2025",
-    coursesCount: 3,
-    description: "UML software modeling, implementation & automated testing, software architecture design patterns, and Agile project management.",
-    credentialUrl: "https://coursera.org/verify/specialization/KEGX8BW9LYU8",
-    category: "engineering",
-    isFeatured: false,
-    skills: ["UML Systems Modeling", "Automated Testing", "Software Architecture", "OOP Patterns"]
-  },
-  {
-    id: "google-project-mgmt",
-    title: "Google Project Management Professional Certificate",
-    issuer: "Google Career Certificates",
-    issuerBrand: "google",
-    year: "2025",
-    coursesCount: 7,
-    description: "Agile & Scrum frameworks, project initiation, risk management, documentation, and cross-functional team leadership.",
-    credentialUrl: "https://coursera.org/verify/professional-cert/F7GKUUADCZ5W",
-    category: "engineering",
-    isFeatured: false,
-    skills: ["Agile & Scrum", "Project Planning", "Risk Mitigation", "Stakeholder Leadership"]
   }
 ];
 
@@ -255,21 +173,17 @@ function IssuerBadge({ brand }: { brand: Certification["issuerBrand"] }) {
 }
 
 export default function Certifications() {
-  const [showAll, setShowAll] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<"all" | "ai" | "genai" | "data" | "engineering">("all");
+  const [activeCategory, setActiveCategory] = useState<"all" | "ai" | "genai">("all");
 
   const filteredCertifications = CERTIFICATIONS_DATA.filter((cert) => {
     if (activeCategory !== "all" && cert.category !== activeCategory) return false;
-    if (!showAll && !cert.isFeatured) return false;
     return true;
   });
 
   const categories = [
     { id: "all", label: "All Credentials" },
     { id: "genai", label: "Generative AI & LLMs" },
-    { id: "ai", label: "Machine & Deep Learning" },
-    { id: "data", label: "Data Science" },
-    { id: "engineering", label: "Software & PM" }
+    { id: "ai", label: "Machine & Deep Learning" }
   ];
 
   const headerVariants = {
@@ -440,27 +354,11 @@ export default function Certifications() {
           </AnimatePresence>
         </motion.div>
 
-        {/* Expand / Collapse Section Button */}
-        <div className="mt-14 flex flex-col items-center justify-center space-y-3">
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => setShowAll(!showAll)}
-            className="inline-flex items-center gap-3 px-8 py-3.5 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 hover:border-amber-500/50 rounded-full font-mono text-xs uppercase tracking-[0.2em] font-semibold text-neutral-200 hover:text-amber-400 transition-all duration-300 shadow-xl"
-            data-cursor="view"
-          >
-            <span>
-              {showAll
-                ? "Show Top Featured Certifications"
-                : `View All Certifications (${CERTIFICATIONS_DATA.length})`}
-            </span>
-            {showAll ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-          </motion.button>
-
-          <p className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest">
-            {showAll
-              ? `Displaying all ${CERTIFICATIONS_DATA.length} verified specializations`
-              : `Displaying 6 featured of ${CERTIFICATIONS_DATA.length} verified specializations`}
+        {/* Section Footer counter */}
+        <div className="mt-14 flex flex-col items-center justify-center space-y-2">
+          <p className="font-mono text-xs text-amber-500/90 uppercase tracking-[0.2em] font-semibold flex items-center gap-2 px-4 py-2 bg-neutral-900/80 border border-neutral-800 rounded-full shadow-md">
+            <Sparkles size={13} className="text-amber-400" />
+            <span>Displaying all {CERTIFICATIONS_DATA.length} verified specializations</span>
           </p>
         </div>
       </div>

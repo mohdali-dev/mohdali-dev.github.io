@@ -16,11 +16,11 @@ export default function Header({ onContactOpen }: HeaderProps) {
   });
 
   const menuItems = [
-    { label: "Work", href: "#work" },
     { label: "Services", href: "#services" },
+    { label: "Tech Stack", href: "#tech-stack" },
+    { label: "Work", href: "#work" },
+    { label: "Publications", href: "#publications" },
     { label: "Methodology", href: "#methodology" },
-    { label: "Certifications", href: "#certifications" },
-    { label: "Testimonials", href: "#testimonials" },
   ];
 
   return (

@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, FileDown } from "lucide-react";
 
 interface HeroProps {
   onContactOpen: () => void;
@@ -79,13 +79,26 @@ export default function Hero({ onContactOpen }: HeroProps) {
           variants={itemVariants}
           className="mt-8 text-neutral-400 text-sm sm:text-base md:text-lg max-w-2xl font-light leading-relaxed tracking-wide"
         >
-          Fine-tuning state-of-the-art vision and speech architectures. Bridging the gap between complex model training and scalable full-stack edge systems.
+          Building production-ready AI systems with Machine Learning, Large Language Models, Computer Vision, and modern full-stack technologies.
         </motion.p>
 
         <motion.div
           variants={itemVariants}
-          className="mt-10 flex flex-wrap gap-4 justify-center"
+          className="mt-10 flex flex-wrap gap-4 justify-center items-center"
         >
+          <motion.a
+            whileHover={{ scale: 1.03, borderColor: "rgba(217, 119, 6, 0.7)" }}
+            whileTap={{ scale: 0.97 }}
+            href="/Muhammad_Ali_CV.pdf"
+            download="Muhammad_Ali_CV.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-3 bg-neutral-900/90 border border-amber-500/40 text-amber-400 hover:text-amber-300 hover:border-amber-500 font-sans text-xs uppercase tracking-[0.2em] font-semibold transition-colors flex items-center gap-2 shadow-lg shadow-amber-500/5 cursor-pointer"
+          >
+            <FileDown size={15} />
+            <span>Download CV</span>
+          </motion.a>
+
           <motion.a
             whileHover={{ scale: 1.03, borderColor: "rgba(217, 119, 6, 0.7)" }}
             whileTap={{ scale: 0.97 }}
@@ -94,6 +107,7 @@ export default function Hero({ onContactOpen }: HeroProps) {
           >
             Explore Selected Work
           </motion.a>
+
           <motion.button
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
