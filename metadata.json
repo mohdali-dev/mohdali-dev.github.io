@@ -1,0 +1,6 @@
+{
+  "name": "Muhammad Ali Portfolio",
+  "description": "A high-fidelity, luxurious dark-themed portfolio for Muhammad Ali, AI/ML Engineer and Full Stack Developer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
