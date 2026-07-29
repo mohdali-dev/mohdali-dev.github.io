@@ -219,7 +219,7 @@ export default function TechStack() {
   return (
     <section
       id="tech-stack"
-      className="bg-black py-20 md:py-28 relative border-t border-neutral-900 overflow-hidden text-neutral-200"
+      className="bg-neutral-950/50 py-20 sm:py-28 md:py-36 lg:py-44 relative border-t border-b border-neutral-900/80 overflow-hidden text-neutral-200"
     >
       {/* Background ambient lighting */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-amber-500/5 rounded-full blur-[140px] pointer-events-none z-0" />
@@ -233,7 +233,7 @@ export default function TechStack() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-12 md:mb-16 text-center max-w-3xl mx-auto space-y-3"
+          className="mb-16 md:mb-24 lg:mb-28 text-center max-w-3xl mx-auto space-y-3"
         >
           <span className="font-mono text-xs uppercase tracking-[0.25em] text-amber-500 font-semibold inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full">
             <Zap size={13} />
@@ -253,41 +253,45 @@ export default function TechStack() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12 md:mb-16"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mb-10 md:mb-14"
         >
           {highlights.map((card, idx) => {
             const Icon = card.icon;
             return (
               <motion.div
                 key={idx}
-                whileHover={{ y: -5, borderColor: "rgba(245, 158, 11, 0.4)" }}
-                className="relative bg-neutral-950/90 border border-neutral-800/80 rounded-xl p-5 shadow-lg overflow-hidden group transition-all duration-300 flex flex-col justify-between"
+                whileHover={{ y: -3, borderColor: "rgba(245, 158, 11, 0.5)" }}
+                className="relative bg-neutral-950/90 border border-neutral-800/80 rounded-md p-3.5 sm:p-4 shadow-sm overflow-hidden group transition-all duration-200 flex flex-col justify-between"
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />
+                {/* Thin orange accent bar in top-left corner */}
+                <div className="absolute top-0 left-0 w-8 h-[2px] bg-amber-500 rounded-r-full" />
+                <div className="absolute top-0 left-0 w-[2px] h-4 bg-amber-500 rounded-b-full" />
+
+                <div className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`} />
 
                 <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="w-10 h-10 rounded-lg bg-neutral-900 border border-neutral-800 group-hover:border-amber-500/40 text-amber-400 flex items-center justify-center transition-colors">
-                      <Icon size={20} />
+                  <div className="flex items-center justify-between mb-2.5">
+                    <div className="w-7 h-7 rounded bg-neutral-900 border border-neutral-800 group-hover:border-amber-500/40 text-amber-400 flex items-center justify-center transition-colors">
+                      <Icon size={14} />
                     </div>
-                    <span className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest font-semibold">
-                      0{idx + 1}
+                    <span className="font-mono text-[9px] text-neutral-500 uppercase tracking-widest font-semibold">
+                      CHIP-0{idx + 1}
                     </span>
                   </div>
 
-                  <h3 className="font-serif text-lg font-bold text-white mb-1.5 group-hover:text-amber-300 transition-colors">
+                  <h3 className="font-serif text-base font-bold text-white mb-1 group-hover:text-amber-300 transition-colors">
                     {card.title}
                   </h3>
-                  <p className="text-xs text-neutral-400 font-light leading-relaxed mb-4">
+                  <p className="text-[11px] text-neutral-400 font-light leading-snug mb-3">
                     {card.subtitle}
                   </p>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 pt-3 border-t border-neutral-900/80">
+                <div className="flex flex-wrap gap-1 pt-2.5 border-t border-neutral-900/90">
                   {card.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-2 py-0.5 bg-neutral-900 text-neutral-300 border border-neutral-800 rounded font-mono text-[10px]"
+                      className="px-1.5 py-0.5 bg-neutral-900/90 text-neutral-300 border border-neutral-800/90 rounded font-mono text-[9px]"
                     >
                       {tag}
                     </span>
@@ -304,7 +308,7 @@ export default function TechStack() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
         >
           {categories.map((cat, idx) => {
             const CategoryIcon = cat.icon;
@@ -313,55 +317,63 @@ export default function TechStack() {
                 key={idx}
                 variants={itemVariants}
                 whileHover={{
-                  y: -6,
+                  y: -3,
                   borderColor: "rgba(245, 158, 11, 0.4)",
-                  boxShadow: "0 12px 30px -10px rgba(245, 158, 11, 0.08)"
+                  boxShadow: "0 8px 24px -10px rgba(245, 158, 11, 0.1)"
                 }}
-                className="bg-neutral-950/80 border border-neutral-800/80 hover:bg-neutral-900/60 rounded-xl p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 group shadow-md"
+                className="relative bg-neutral-950/90 border border-neutral-800/80 hover:bg-neutral-900/50 rounded-md p-3.5 sm:p-4 flex flex-col justify-between transition-all duration-200 group shadow-sm overflow-hidden"
               >
+                {/* Thin orange accent bar in top-left corner */}
+                <div className="absolute top-0 left-0 w-8 h-[2px] bg-amber-500 rounded-r-full" />
+                <div className="absolute top-0 left-0 w-[2px] h-4 bg-amber-500 rounded-b-full" />
+
                 <div>
                   {/* Category Card Header */}
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <div className="flex items-center gap-2.5">
-                      <div className="p-2 rounded-lg bg-neutral-900 text-amber-400 border border-neutral-800 group-hover:border-amber-500/40 group-hover:bg-amber-500/10 transition-colors">
-                        <CategoryIcon size={18} />
+                  <div className="flex items-start justify-between gap-2 mb-2.5 pt-1">
+                    <div className="flex items-center gap-2">
+                      <div className="p-1.5 rounded bg-neutral-900 text-amber-400 border border-neutral-800 group-hover:border-amber-500/40 group-hover:bg-amber-500/10 transition-colors">
+                        <CategoryIcon size={14} />
                       </div>
-                      <h3 className="font-serif text-base sm:text-lg font-bold text-white group-hover:text-amber-300 transition-colors">
+                      <h3 className="font-serif text-sm sm:text-base font-bold text-white group-hover:text-amber-300 transition-colors">
                         {cat.title}
                       </h3>
                     </div>
-                    <span className="font-mono text-[10px] px-2 py-0.5 bg-neutral-900 text-neutral-400 border border-neutral-800 rounded-full">
+                    <span className="font-mono text-[9px] px-1.5 py-0.5 bg-neutral-900 text-neutral-400 border border-neutral-800 rounded font-semibold">
                       {cat.items.length}
                     </span>
                   </div>
 
                   {/* Description */}
-                  <p className="text-xs text-neutral-400 font-light leading-relaxed mb-5">
+                  <p className="text-[11px] text-neutral-400 font-light leading-relaxed mb-3.5">
                     {cat.description}
                   </p>
                 </div>
 
                 {/* Technology Badges / Pills */}
-                <div className="flex flex-wrap gap-2 pt-3 border-t border-neutral-900">
+                <div className="flex flex-wrap gap-1.5 pt-2.5 border-t border-neutral-900/90">
                   {cat.items.map((item) => (
                     <motion.div
                       key={item.name}
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="group/badge inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-neutral-900/90 hover:bg-neutral-900 border border-neutral-800 hover:border-amber-500/50 rounded-lg text-xs font-mono text-neutral-300 hover:text-white transition-all duration-200 cursor-default select-none"
+                      whileHover={{ scale: 1.03, y: -1 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="group/badge inline-flex items-center gap-1.5 px-2 py-1 bg-neutral-900/90 hover:bg-neutral-900 border border-neutral-800 hover:border-amber-500/50 rounded text-[11px] font-mono text-neutral-300 hover:text-white transition-all duration-150 cursor-default select-none"
                     >
                       {item.slug ? (
                         <img
                           src={`https://cdn.simpleicons.org/${item.slug}`}
                           alt={`${item.name} icon`}
-                          className="w-3.5 h-3.5 opacity-60 group-hover/badge:opacity-100 group-hover/badge:scale-110 transition-all object-contain filter grayscale group-hover/badge:grayscale-0"
+                          loading="lazy"
+                          decoding="async"
+                          width="12"
+                          height="12"
+                          className="w-3 h-3 opacity-60 group-hover/badge:opacity-100 group-hover/badge:scale-110 transition-all object-contain filter grayscale group-hover/badge:grayscale-0"
                           referrerPolicy="no-referrer"
                           onError={(e) => {
                             (e.target as HTMLElement).style.display = "none";
                           }}
                         />
                       ) : (
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                        <span className="w-1 h-1 rounded-full bg-amber-500" />
                       )}
                       <span>{item.name}</span>
                     </motion.div>

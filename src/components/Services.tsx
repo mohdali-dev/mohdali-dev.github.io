@@ -46,7 +46,7 @@ export default function Services() {
   };
 
   return (
-    <section id="services" className="bg-black py-24 md:py-36 relative border-b border-neutral-950 overflow-hidden">
+    <section id="services" className="bg-black py-20 sm:py-28 md:py-36 lg:py-44 relative border-t border-b border-neutral-900/80 overflow-hidden">
       {/* Background Glow Accents */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
@@ -65,7 +65,7 @@ export default function Services() {
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         {/* Section Header */}
-        <div className="max-w-3xl mb-20">
+        <div className="max-w-3xl mb-16 md:mb-24 lg:mb-28">
           <span className="font-mono text-[9px] text-amber-500 uppercase tracking-[0.4em] font-medium block mb-4">
             Engineering Expertise
           </span>

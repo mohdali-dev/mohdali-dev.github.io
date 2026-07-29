@@ -106,6 +106,19 @@ export default function Footer() {
                   Certifications
                 </a>
               </li>
+              <li>
+                <a
+                  href="/404"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.history.pushState({}, "", "/404");
+                    window.dispatchEvent(new PopStateEvent("popstate"));
+                  }}
+                  className="hover:text-amber-400 transition-colors text-neutral-500 font-mono text-[10px]"
+                >
+                  404 Page Demo
+                </a>
+              </li>
             </ul>
           </div>
 

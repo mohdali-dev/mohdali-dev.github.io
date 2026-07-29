@@ -53,6 +53,10 @@ export default function Hero({ onContactOpen }: HeroProps) {
           <img
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHYADWQvyfIbmv9nVuIb9Aymm2kwkyYb96NRD0C_wcykujLyXcZDO3MQrFPP1CSZKxgYM6JxNyQxcpDnurAqWdFTdJxf5KvYEp_OzyQzTUKO3dQWft1igqbqBxXap7jK5ZcEOxh775lx5vwGYW3Pl04AYDLAKvp0BWU4jMbnn9ARgNadGJ6EIMy3otZiRm5o7swfC1voi55ccpKYITmwNwNAlqwY-WdU9TlW4r93oa3-9Gv5G94Kfv0k63Xt6EQw4FuLOlsqSzgO0"
             alt="Muhammad Ali Portrait"
+            loading="eager"
+            decoding="async"
+            width="600"
+            height="750"
             className="w-full h-full object-cover object-center filter grayscale opacity-45 mix-blend-screen md:opacity-55"
             referrerPolicy="no-referrer"
           />
@@ -64,27 +68,27 @@ export default function Hero({ onContactOpen }: HeroProps) {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center text-center justify-center flex-grow pt-24 md:pt-36"
+        className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 md:px-12 flex flex-col items-center text-center justify-center flex-grow pt-24 md:pt-36"
       >
-        <motion.div variants={itemVariants} className="space-y-4">
-          <h1 className="font-serif text-5xl sm:text-6xl md:text-[88px] font-bold leading-[1.02] tracking-normal">
+        <motion.div variants={itemVariants} className="space-y-3 sm:space-y-4 max-w-full">
+          <h1 className="font-serif text-4xl sm:text-6xl md:text-[88px] font-bold leading-[1.05] tracking-tight break-words">
             <span className="metallic-text drop-shadow-[0_2px_15px_rgba(217,119,6,0.15)]">AI/ML Engineer</span>
           </h1>
-          <h2 className="font-serif text-2xl sm:text-3xl md:text-[45px] italic text-neutral-300 font-light tracking-wide">
+          <h2 className="font-serif text-xl sm:text-3xl md:text-[45px] italic text-neutral-300 font-light tracking-wide break-words">
             &amp; Full Stack Developer
           </h2>
         </motion.div>
 
         <motion.p
           variants={itemVariants}
-          className="mt-8 text-neutral-400 text-sm sm:text-base md:text-lg max-w-2xl font-light leading-relaxed tracking-wide"
+          className="mt-6 sm:mt-8 text-neutral-400 text-sm sm:text-base md:text-lg max-w-2xl font-light leading-relaxed tracking-wide px-2"
         >
           Building production-ready AI systems with Machine Learning, Large Language Models, Computer Vision, and modern full-stack technologies.
         </motion.p>
 
         <motion.div
           variants={itemVariants}
-          className="mt-10 flex flex-wrap gap-4 justify-center items-center"
+          className="mt-8 sm:mt-10 flex flex-col sm:flex-row flex-wrap gap-3.5 sm:gap-4 justify-center items-center w-full sm:w-auto"
         >
           <motion.a
             whileHover={{ scale: 1.03, borderColor: "rgba(217, 119, 6, 0.7)" }}
@@ -93,7 +97,7 @@ export default function Hero({ onContactOpen }: HeroProps) {
             download="Muhammad_Ali_CV.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-3 bg-neutral-900/90 border border-amber-500/40 text-amber-400 hover:text-amber-300 hover:border-amber-500 font-sans text-xs uppercase tracking-[0.2em] font-semibold transition-colors flex items-center gap-2 shadow-lg shadow-amber-500/5 cursor-pointer"
+            className="w-full sm:w-auto min-h-[44px] px-6 py-3 bg-neutral-900/90 border border-amber-500/40 text-amber-400 hover:text-amber-300 hover:border-amber-500 font-sans text-xs uppercase tracking-[0.2em] font-semibold transition-colors flex items-center justify-center gap-2 shadow-lg shadow-amber-500/5 cursor-pointer"
           >
             <FileDown size={15} />
             <span>Download CV</span>
@@ -103,7 +107,7 @@ export default function Hero({ onContactOpen }: HeroProps) {
             whileHover={{ scale: 1.03, borderColor: "rgba(217, 119, 6, 0.7)" }}
             whileTap={{ scale: 0.97 }}
             href="#work"
-            className="px-6 py-3 bg-neutral-900 border border-neutral-800 text-neutral-200 hover:text-white font-sans text-xs uppercase tracking-[0.2em] font-medium transition-colors"
+            className="w-full sm:w-auto min-h-[44px] px-6 py-3 bg-neutral-900 border border-neutral-800 text-neutral-200 hover:text-white font-sans text-xs uppercase tracking-[0.2em] font-medium transition-colors flex items-center justify-center"
           >
             Explore Selected Work
           </motion.a>
@@ -112,7 +116,7 @@ export default function Hero({ onContactOpen }: HeroProps) {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={onContactOpen}
-            className="px-6 py-3 bg-amber-500 font-sans text-xs uppercase tracking-[0.2em] font-bold text-black hover:opacity-95 transition-opacity"
+            className="w-full sm:w-auto min-h-[44px] px-6 py-3 bg-amber-500 font-sans text-xs uppercase tracking-[0.2em] font-bold text-black hover:opacity-95 transition-opacity flex items-center justify-center"
           >
             Get In Touch
           </motion.button>

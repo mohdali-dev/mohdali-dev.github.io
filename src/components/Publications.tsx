@@ -98,7 +98,7 @@ export default function Publications() {
   return (
     <section
       id="publications"
-      className="py-12 md:py-16 bg-black text-neutral-200 relative border-t border-neutral-900 overflow-hidden"
+      className="py-20 sm:py-28 md:py-36 lg:py-44 bg-neutral-950/60 text-neutral-200 relative border-t border-b border-neutral-900/80 overflow-hidden"
     >
       {/* Background ambient lighting */}
       <div className="absolute top-1/2 right-10 -translate-y-1/2 w-[350px] h-[180px] bg-amber-500/5 rounded-full blur-[100px] pointer-events-none" />
@@ -110,7 +110,7 @@ export default function Publications() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3"
+          className="mb-14 md:mb-20 lg:mb-24 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3"
         >
           <div>
             <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-amber-500 font-semibold mb-1 flex items-center gap-1.5">

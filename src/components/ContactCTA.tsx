@@ -36,7 +36,7 @@ export default function ContactCTA({ isOpen, onClose }: ContactProps) {
   return (
     <>
       {/* Primary Visual Pre-CTA section shown directly in page flow */}
-      <section id="contact-cta" className="relative min-h-[90vh] flex flex-col items-center justify-end pb-32 pt-48 overflow-hidden bg-black border-t border-neutral-900/60">
+      <section id="contact-cta" className="relative min-h-[85vh] flex flex-col items-center justify-end pb-28 pt-36 sm:pb-36 sm:pt-44 md:pb-44 md:pt-56 lg:pb-52 lg:pt-64 overflow-hidden bg-neutral-950/70 border-t border-b border-neutral-900/80">
         <div className="absolute inset-0 z-0 flex justify-center opacity-25 md:opacity-35 pointer-events-none">
           {/* Black vertical gradient masking to blend portrait seamlessly */}
           <div className="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-black to-transparent z-10" />
@@ -44,23 +44,27 @@ export default function ContactCTA({ isOpen, onClose }: ContactProps) {
           <img
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHYADWQvyfIbmv9nVuIb9Aymm2kwkyYb96NRD0C_wcykujLyXcZDO3MQrFPP1CSZKxgYM6JxNyQxcpDnurAqWdFTdJxf5KvYEp_OzyQzTUKO3dQWft1igqbqBxXap7jK5ZcEOxh775lx5vwGYW3Pl04AYDLAKvp0BWU4jMbnn9ARgNadGJ6EIMy3otZiRm5o7swfC1voi55ccpKYITmwNwNAlqwY-WdU9TlW4r93oa3-9Gv5G94Kfv0k63Xt6EQw4FuLOlsqSzgO0"
             alt="Muhammad Ali Portrait"
+            loading="lazy"
+            decoding="async"
+            width="800"
+            height="1000"
             className="w-full max-w-4xl object-contain filter grayscale scale-[1.03]"
             referrerPolicy="no-referrer"
           />
         </div>
 
         <div className="relative z-10 text-center max-w-5xl px-6 md:px-12">
-          <span className="font-mono text-[9px] text-amber-500 uppercase tracking-[0.6em] font-medium block mb-12">
+          <span className="font-mono text-[9px] text-amber-500 uppercase tracking-[0.6em] font-medium block mb-10">
             Project in Mind?
           </span>
-          <h2 className="font-serif text-5xl sm:text-6xl md:text-[110px] leading-[1.05] tracking-tight text-white mb-16">
+          <h2 className="font-serif text-4xl sm:text-6xl md:text-[110px] leading-[1.05] tracking-tight text-white mb-14">
             Let's build something <br />
             <span className="italic gold-text font-light">intelligent.</span>
           </h2>
 
           <button
             onClick={onClose} // Open form
-            className="px-14 py-5 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 font-sans text-xs uppercase tracking-[0.3em] font-semibold text-black hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all"
+            className="min-h-[44px] min-w-[44px] px-10 sm:px-14 py-4 sm:py-5 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 font-sans text-xs uppercase tracking-[0.3em] font-semibold text-black hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all"
           >
             Get in touch
           </button>

@@ -29,10 +29,10 @@ export default function Testimonials() {
   };
 
   return (
-    <section id="testimonials" className="bg-black py-24 md:py-36 border-b border-neutral-900">
+    <section id="testimonials" className="bg-black py-20 sm:py-28 md:py-36 lg:py-44 border-t border-b border-neutral-900/80 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Header Title */}
-        <div className="text-center max-w-3xl mx-auto mb-20 md:mb-28">
+        <div className="text-center max-w-3xl mx-auto mb-16 md:mb-24 lg:mb-28">
           <span className="font-mono text-[9px] text-amber-500 uppercase tracking-[0.4em] font-medium block mb-4">
             Industry Feedback
           </span>

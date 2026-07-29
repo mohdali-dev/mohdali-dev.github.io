@@ -95,10 +95,10 @@ export default function Header({ onContactOpen }: HeaderProps) {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-neutral-400 hover:text-white transition-colors p-1"
+            className="md:hidden text-neutral-400 hover:text-white transition-colors p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded"
             aria-label="Toggle Menu"
           >
-            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </motion.div>
       </header>
@@ -113,13 +113,13 @@ export default function Header({ onContactOpen }: HeaderProps) {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 top-[60px] z-30 bg-black/98 backdrop-blur-lg px-6 py-12 md:hidden flex flex-col justify-between"
           >
-            <div className="flex flex-col space-y-6">
+            <div className="flex flex-col space-y-4">
               {menuItems.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="font-serif text-3xl tracking-tight text-neutral-200 hover:text-amber-400 transition-colors py-2 flex justify-between items-center border-b border-neutral-900"
+                  className="font-serif text-2xl sm:text-3xl tracking-tight text-neutral-200 hover:text-amber-400 transition-colors py-3 min-h-[44px] flex justify-between items-center border-b border-neutral-900"
                 >
                   <span>{item.label}</span>
                   <ArrowUpRight size={20} className="text-neutral-600" />
@@ -134,7 +134,7 @@ export default function Header({ onContactOpen }: HeaderProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full py-3.5 border border-neutral-800 text-neutral-300 hover:text-amber-400 font-sans text-xs uppercase tracking-[0.25em] font-bold flex items-center justify-center gap-2"
+                className="w-full py-3.5 min-h-[44px] border border-neutral-800 text-neutral-300 hover:text-amber-400 font-sans text-xs uppercase tracking-[0.25em] font-bold flex items-center justify-center gap-2"
               >
                 <Github size={18} />
                 <span>GitHub Profile</span>
@@ -145,7 +145,7 @@ export default function Header({ onContactOpen }: HeaderProps) {
                   setMobileMenuOpen(false);
                   onContactOpen();
                 }}
-                className="w-full py-4 bg-amber-500 font-sans text-xs uppercase tracking-[0.25em] font-bold text-black"
+                className="w-full py-4 min-h-[44px] bg-amber-500 font-sans text-xs uppercase tracking-[0.25em] font-bold text-black flex items-center justify-center"
               >
                 Let's Talk
               </motion.button>

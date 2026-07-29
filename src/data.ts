@@ -1,12 +1,311 @@
 import { Project, ServicePillar, RoadmapStep, Testimonial } from "./types";
 
+const makeSvgUrl = (svgContent: string) => `data:image/svg+xml;utf8,${encodeURIComponent(svgContent.trim())}`;
+
+const BALTIVOICE_SVG = makeSvgUrl(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750">
+  <defs>
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#fbbf24" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="750" fill="#050505"/>
+  <circle cx="1000" cy="150" r="350" fill="#f59e0b" opacity="0.08" filter="blur(60px)"/>
+  
+  <rect x="50" y="45" width="1100" height="660" rx="16" fill="#0d0d12" stroke="#27272a" stroke-width="2"/>
+  
+  <text x="90" y="105" font-family="monospace" font-size="13" font-weight="bold" fill="#f59e0b" letter-spacing="3">BENCHMARK EVALUATION // ASR SPEECH PIPELINE</text>
+  <text x="90" y="145" font-family="sans-serif" font-size="30" font-weight="bold" fill="#ffffff">Whisper Fine-Tuning Performance (WER)</text>
+  <text x="90" y="175" font-family="sans-serif" font-size="15" fill="#a1a1aa">Word Error Rate benchmark on low-resource Balti dialect audio corpus</text>
+  
+  <rect x="90" y="215" width="1020" height="370" rx="12" fill="#121217" stroke="#1f1f23" stroke-width="1.5"/>
+  
+  <line x1="380" y1="235" x2="380" y2="525" stroke="#27272a" stroke-dasharray="4 4"/>
+  <text x="380" y="550" font-family="monospace" font-size="12" fill="#71717a" text-anchor="middle">0%</text>
+
+  <line x1="560" y1="235" x2="560" y2="525" stroke="#27272a" stroke-dasharray="4 4"/>
+  <text x="560" y="550" font-family="monospace" font-size="12" fill="#71717a" text-anchor="middle">50%</text>
+
+  <line x1="740" y1="235" x2="740" y2="525" stroke="#27272a" stroke-dasharray="4 4"/>
+  <text x="740" y="550" font-family="monospace" font-size="12" fill="#71717a" text-anchor="middle">100%</text>
+
+  <line x1="920" y1="235" x2="920" y2="525" stroke="#27272a" stroke-dasharray="4 4"/>
+  <text x="920" y="550" font-family="monospace" font-size="12" fill="#71717a" text-anchor="middle">150%</text>
+  
+  <text x="120" y="290" font-family="sans-serif" font-size="16" font-weight="bold" fill="#e4e4e7">Baseline Model</text>
+  <text x="120" y="312" font-family="sans-serif" font-size="13" fill="#71717a">OpenAI Whisper (Out of box)</text>
+  <rect x="380" y="275" width="573" height="48" rx="8" fill="#450a0a" stroke="#991b1b" stroke-width="1.5"/>
+  <text x="965" y="306" font-family="monospace" font-size="18" font-weight="bold" fill="#fca5a5">159.19% WER</text>
+  
+  <text x="120" y="420" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Fine-Tuned BaltiVoice</text>
+  <text x="120" y="442" font-family="sans-serif" font-size="13" fill="#f59e0b">LoRA + 8-bit Quantized ONNX</text>
+  <rect x="380" y="405" width="96" height="48" rx="8" fill="url(#amberGrad)" filter="url(#glow)"/>
+  <text x="490" y="436" font-family="monospace" font-size="18" font-weight="bold" fill="#fbbf24">26.74% WER</text>
+  
+  <rect x="720" y="412" width="230" height="34" rx="6" fill="#271e0c" stroke="#d97706" stroke-width="1"/>
+  <text x="835" y="434" font-family="monospace" font-size="12" font-weight="bold" fill="#f59e0b" text-anchor="middle">▼ 83.2% WER REDUCTION</text>
+
+  <rect x="90" y="605" width="310" height="70" rx="10" fill="#121217" stroke="#1f1f23"/>
+  <text x="110" y="633" font-family="monospace" font-size="11" fill="#71717a">INFERENCE LATENCY</text>
+  <text x="110" y="660" font-family="monospace" font-size="20" font-weight="bold" fill="#f59e0b">131 ms / chunk</text>
+
+  <rect x="445" y="605" width="310" height="70" rx="10" fill="#121217" stroke="#1f1f23"/>
+  <text x="465" y="633" font-family="monospace" font-size="11" fill="#71717a">MEMORY FOOTPRINT</text>
+  <text x="465" y="660" font-family="monospace" font-size="20" font-weight="bold" fill="#ffffff">420 MB (INT8)</text>
+
+  <rect x="800" y="605" width="310" height="70" rx="10" fill="#121217" stroke="#1f1f23"/>
+  <text x="820" y="633" font-family="monospace" font-size="11" fill="#71717a">EDGE STATUS</text>
+  <text x="820" y="660" font-family="monospace" font-size="20" font-weight="bold" fill="#34d399">100% Offline</text>
+</svg>`);
+
+const OMIT_SVG = makeSvgUrl(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750">
+  <defs>
+    <linearGradient id="btnGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <filter id="btnGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="750" fill="#050505"/>
+  <circle cx="600" cy="375" r="400" fill="#f59e0b" opacity="0.05" filter="blur(80px)"/>
+
+  <rect x="50" y="45" width="1100" height="660" rx="16" fill="#0c0c10" stroke="#27272a" stroke-width="2"/>
+
+  <rect x="50" y="45" width="1100" height="50" rx="16" fill="#14141a"/>
+  <line x1="50" y1="95" x2="1150" y2="95" stroke="#27272a" stroke-width="1.5"/>
+  <circle cx="80" cy="70" r="6" fill="#ef4444"/>
+  <circle cx="100" cy="70" r="6" fill="#f59e0b"/>
+  <circle cx="120" cy="70" r="6" fill="#10b981"/>
+  <text x="600" y="75" font-family="monospace" font-size="13" font-weight="bold" fill="#f59e0b" text-anchor="middle" letter-spacing="2">OMIT // CLIENT-SIDE PII SANITIZATION ENGINE</text>
+
+  <rect x="80" y="125" width="450" height="470" rx="12" fill="#111116" stroke="#27272a" stroke-width="1.5"/>
+  <rect x="80" y="125" width="450" height="40" rx="12" fill="#17171e"/>
+  <line x1="80" y1="165" x2="530" y2="165" stroke="#27272a"/>
+  <text x="100" y="150" font-family="monospace" font-size="12" font-weight="bold" fill="#ef4444">RAW UNTRUSTED PROMPT INPUT</text>
+  
+  <text x="110" y="210" font-family="monospace" font-size="15" fill="#a1a1aa">User query to LLM backend:</text>
+  <text x="110" y="250" font-family="sans-serif" font-size="16" fill="#e4e4e7">"Please process refund for customer</text>
+  <text x="110" y="280" font-family="sans-serif" font-size="16" fill="#f87171" font-weight="bold">Jane Doe</text>
+  <text x="188" y="280" font-family="sans-serif" font-size="16" fill="#e4e4e7">. Contact email is</text>
+  <text x="110" y="310" font-family="sans-serif" font-size="16" fill="#f87171" font-weight="bold" text-decoration="underline">jane@example.com</text>
+  <text x="110" y="340" font-family="sans-serif" font-size="16" fill="#e4e4e7">or reach mobile line at</text>
+  <text x="110" y="370" font-family="sans-serif" font-size="16" fill="#f87171" font-weight="bold" text-decoration="underline">(555) 123-4567</text>
+  <text x="110" y="400" font-family="sans-serif" font-size="16" fill="#e4e4e7">before 5 PM today."</text>
+
+  <rect x="100" y="460" width="410" height="110" rx="8" fill="#1c1313" stroke="#7f1d1d" stroke-dasharray="3 3"/>
+  <text x="120" y="490" font-family="monospace" font-size="11" fill="#fca5a5">DETECTED UNPROTECTED PII ENTITIES:</text>
+  <text x="120" y="515" font-family="monospace" font-size="12" fill="#f87171">• PERSON: Jane Doe</text>
+  <text x="120" y="535" font-family="monospace" font-size="12" fill="#f87171">• EMAIL: jane@example.com</text>
+  <text x="120" y="555" font-family="monospace" font-size="12" fill="#f87171">• PHONE: (555) 123-4567</text>
+
+  <g transform="translate(545, 300)">
+    <rect x="0" y="0" width="110" height="110" rx="20" fill="url(#btnGrad)" filter="url(#btnGlow)"/>
+    <path d="M 35 55 L 75 55 M 62 43 L 75 55 L 62 67" stroke="#000000" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="55" y="90" font-family="monospace" font-size="10" font-weight="bold" fill="#000000" text-anchor="middle">MASK PII</text>
+  </g>
+  <text x="600" y="440" font-family="monospace" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="bold">&lt; 5ms SIMD</text>
+
+  <rect x="670" y="125" width="450" height="470" rx="12" fill="#111116" stroke="#d97706" stroke-width="1.5"/>
+  <rect x="670" y="125" width="450" height="40" rx="12" fill="#1e1810"/>
+  <line x1="670" y1="165" x2="1120" y2="165" stroke="#d97706" stroke-width="0.8"/>
+  <text x="690" y="150" font-family="monospace" font-size="12" font-weight="bold" fill="#f59e0b">SANITIZED ZERO-TRUST PAYLOAD</text>
+
+  <text x="700" y="210" font-family="monospace" font-size="15" fill="#a1a1aa">Clean payload sent to LLM:</text>
+  <text x="700" y="250" font-family="sans-serif" font-size="16" fill="#e4e4e7">"Please process refund for customer</text>
+  
+  <rect x="700" y="265" width="125" height="26" rx="5" fill="#f59e0b" fill-opacity="0.2" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="762" y="283" font-family="monospace" font-size="13" font-weight="bold" fill="#fbbf24" text-anchor="middle">[PERSON_1]</text>
+  <text x="835" y="283" font-family="sans-serif" font-size="16" fill="#e4e4e7">. Contact email is</text>
+
+  <rect x="700" y="297" width="115" height="26" rx="5" fill="#f59e0b" fill-opacity="0.2" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="757" y="315" font-family="monospace" font-size="13" font-weight="bold" fill="#fbbf24" text-anchor="middle">[EMAIL_1]</text>
+
+  <text x="700" y="345" font-family="sans-serif" font-size="16" fill="#e4e4e7">or reach mobile line at</text>
+  
+  <rect x="700" y="357" width="115" height="26" rx="5" fill="#f59e0b" fill-opacity="0.2" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="757" y="375" font-family="monospace" font-size="13" font-weight="bold" fill="#fbbf24" text-anchor="middle">[PHONE_1]</text>
+  
+  <text x="700" y="405" font-family="sans-serif" font-size="16" fill="#e4e4e7">before 5 PM today."</text>
+
+  <rect x="690" y="460" width="410" height="110" rx="8" fill="#191610" stroke="#d97706" stroke-dasharray="3 3"/>
+  <text x="710" y="490" font-family="monospace" font-size="11" fill="#fbbf24">PRIVACY &amp; SECURITY GUARANTEES:</text>
+  <text x="710" y="515" font-family="monospace" font-size="12" fill="#34d399">✓ 100% Client-Side Local Execution</text>
+  <text x="710" y="535" font-family="monospace" font-size="12" fill="#34d399">✓ Zero Cloud Data Retention</text>
+  <text x="710" y="555" font-family="monospace" font-size="12" fill="#34d399">✓ Reversible Cryptographic Token Salt</text>
+
+  <text x="80" y="640" font-family="monospace" font-size="12" fill="#71717a">LATENCY: <tspan fill="#34d399" font-weight="bold">4.2ms</tspan></text>
+  <text x="320" y="640" font-family="monospace" font-size="12" fill="#71717a">ACCURACY: <tspan fill="#f59e0b" font-weight="bold">99.97%</tspan></text>
+  <text x="560" y="640" font-family="monospace" font-size="12" fill="#71717a">COMPLIANCE: <tspan fill="#ffffff" font-weight="bold">FedRAMP / HIPAA</tspan></text>
+</svg>`);
+
+const MENU_SCANNER_SVG = makeSvgUrl(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750">
+  <defs>
+    <linearGradient id="scanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0" />
+      <stop offset="50%" stop-color="#f59e0b" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="750" fill="#050505"/>
+  <circle cx="350" cy="375" r="350" fill="#f59e0b" opacity="0.08" filter="blur(70px)"/>
+
+  <rect x="140" y="35" width="420" height="680" rx="40" fill="#18181f" stroke="#3f3f46" stroke-width="4"/>
+  <rect x="150" y="45" width="400" height="660" rx="32" fill="#09090d"/>
+  
+  <rect x="290" y="55" width="120" height="22" rx="11" fill="#18181f"/>
+
+  <rect x="170" y="100" width="360" height="550" rx="12" fill="#141419"/>
+
+  <path d="M 190 140 L 190 120 L 210 120" fill="none" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 510 140 L 510 120 L 490 120" fill="none" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 190 610 L 190 630 L 210 630" fill="none" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 510 610 L 510 630 L 490 630" fill="none" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+
+  <rect x="170" y="270" width="360" height="60" fill="url(#scanGrad)"/>
+  <line x1="170" y1="300" x2="530" y2="300" stroke="#fbbf24" stroke-width="2"/>
+
+  <rect x="185" y="140" width="330" height="110" rx="10" fill="#09090b" fill-opacity="0.9" stroke="#27272a" stroke-width="1.5"/>
+  <text x="200" y="168" font-family="sans-serif" font-size="15" font-weight="bold" fill="#ffffff">Zuppa di Funghi</text>
+  <text x="200" y="190" font-family="sans-serif" font-size="12" fill="#a1a1aa">Wild Mushroom &amp; Truffle Soup</text>
+  <rect x="200" y="205" width="95" height="22" rx="4" fill="#064e3b" stroke="#10b981"/>
+  <text x="247" y="220" font-family="monospace" font-size="10" font-weight="bold" fill="#34d399" text-anchor="middle">✓ VEGETARIAN</text>
+  <rect x="305" y="205" width="95" height="22" rx="4" fill="#064e3b" stroke="#10b981"/>
+  <text x="352" y="220" font-family="monospace" font-size="10" font-weight="bold" fill="#34d399" text-anchor="middle">✓ GLUTEN FREE</text>
+
+  <rect x="185" y="320" width="330" height="130" rx="10" fill="#120c0c" fill-opacity="0.95" stroke="#dc2626" stroke-width="2"/>
+  <text x="200" y="348" font-family="sans-serif" font-size="15" font-weight="bold" fill="#ffffff">Pesto alla Genovese</text>
+  <text x="200" y="370" font-family="sans-serif" font-size="12" fill="#a1a1aa">Tagliatelle with Pine Nut Pesto</text>
+  <rect x="200" y="388" width="165" height="24" rx="4" fill="#450a0a" stroke="#ef4444"/>
+  <text x="282" y="404" font-family="monospace" font-size="10" font-weight="bold" fill="#fca5a5" text-anchor="middle">⚠️ ALLERGEN: TREE NUTS</text>
+  <text x="200" y="435" font-family="monospace" font-size="10" fill="#f87171">Contains roasted pine nuts &amp; dairy</text>
+
+  <rect x="185" y="475" width="330" height="110" rx="10" fill="#09090b" fill-opacity="0.9" stroke="#27272a" stroke-width="1.5"/>
+  <text x="200" y="503" font-family="sans-serif" font-size="15" font-weight="bold" fill="#ffffff">Filetto di Salmone</text>
+  <text x="200" y="525" font-family="sans-serif" font-size="12" fill="#a1a1aa">Grilled Atlantic Salmon with Lemon</text>
+  <rect x="200" y="540" width="120" height="22" rx="4" fill="#271e0c" stroke="#f59e0b"/>
+  <text x="260" y="555" font-family="monospace" font-size="10" font-weight="bold" fill="#fbbf24" text-anchor="middle">★ HIGH PROTEIN</text>
+
+  <g transform="translate(620, 80)">
+    <text x="0" y="30" font-family="monospace" font-size="13" font-weight="bold" fill="#f59e0b" letter-spacing="3">COMPUTER VISION &amp; MULTI-MODAL AI</text>
+    <text x="0" y="70" font-family="sans-serif" font-size="34" font-weight="bold" fill="#ffffff">Menu Scanner App</text>
+    <text x="0" y="105" font-family="sans-serif" font-size="16" fill="#a1a1aa">Instant OCR dish translation &amp; allergen detection powered by Gemini 2.5</text>
+
+    <rect x="0" y="145" width="480" height="110" rx="12" fill="#121217" stroke="#27272a" stroke-width="1.5"/>
+    <circle cx="45" cy="200" r="22" fill="#271e0c" stroke="#f59e0b"/>
+    <text x="45" y="206" font-family="monospace" font-size="14" font-weight="bold" fill="#f59e0b" text-anchor="middle">AI</text>
+    <text x="85" y="188" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Gemini Pro Multi-modal OCR</text>
+    <text x="85" y="212" font-family="sans-serif" font-size="13" fill="#a1a1aa">Parses unstructured menu text into JSON schemas in 680ms</text>
+
+    <rect x="0" y="280" width="480" height="110" rx="12" fill="#121217" stroke="#27272a" stroke-width="1.5"/>
+    <circle cx="45" cy="335" r="22" fill="#271e0c" stroke="#f59e0b"/>
+    <text x="45" y="341" font-family="sans-serif" font-size="16" font-weight="bold" fill="#f59e0b" text-anchor="middle">⚡</text>
+    <text x="85" y="323" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Personalized Allergen Profile</text>
+    <text x="85" y="347" font-family="sans-serif" font-size="13" fill="#a1a1aa">Cross-checks custom dietary restrictions with 99.4% accuracy</text>
+
+    <rect x="0" y="415" width="480" height="110" rx="12" fill="#121217" stroke="#27272a" stroke-width="1.5"/>
+    <circle cx="45" cy="470" r="22" fill="#271e0c" stroke="#f59e0b"/>
+    <text x="45" y="475" font-family="monospace" font-size="13" font-weight="bold" fill="#f59e0b" text-anchor="middle">DB</text>
+    <text x="85" y="458" font-family="sans-serif" font-size="16" font-weight="bold" fill="#ffffff">Firestore Real-time Sync</text>
+    <text x="85" y="482" font-family="sans-serif" font-size="13" fill="#a1a1aa">Instant persistence across web and mobile clients seamlessly</text>
+  </g>
+</svg>`);
+
+const DOCUMIND_SVG = makeSvgUrl(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750">
+  <defs>
+    <linearGradient id="docGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="750" fill="#050505"/>
+  <circle cx="900" cy="200" r="350" fill="#f59e0b" opacity="0.06" filter="blur(70px)"/>
+
+  <rect x="50" y="45" width="1100" height="660" rx="16" fill="#0c0c10" stroke="#27272a" stroke-width="2"/>
+
+  <rect x="50" y="45" width="1100" height="50" rx="16" fill="#14141a"/>
+  <line x1="50" y1="95" x2="1150" y2="95" stroke="#27272a" stroke-width="1.5"/>
+  <circle cx="80" cy="70" r="6" fill="#ef4444"/>
+  <circle cx="100" cy="70" r="6" fill="#f59e0b"/>
+  <circle cx="120" cy="70" r="6" fill="#10b981"/>
+  <text x="600" y="75" font-family="monospace" font-size="13" font-weight="bold" fill="#f59e0b" text-anchor="middle" letter-spacing="2">DOCUMIND AI // RAG INTERACTIVE WORKSPACE</text>
+
+  <rect x="80" y="115" width="510" height="560" rx="12" fill="#111116" stroke="#27272a" stroke-width="1.5"/>
+  <rect x="80" y="115" width="510" height="40" rx="12" fill="#17171e"/>
+  <line x1="80" y1="155" x2="590" y2="155" stroke="#27272a"/>
+  <text x="100" y="140" font-family="monospace" font-size="11" fill="#a1a1aa">📄 DOCUMENT PREVIEW: <tspan fill="#ffffff">Financial_Report_Q4.pdf (Page 14)</tspan></text>
+
+  <rect x="110" y="180" width="450" height="465" rx="6" fill="#181820" stroke="#27272a"/>
+  
+  <text x="135" y="215" font-family="sans-serif" font-size="14" font-weight="bold" fill="#ffffff">Section 4.2 — System Scaling &amp; Bottlenecks</text>
+  <line x1="135" y1="230" x2="535" y2="230" stroke="#27272a"/>
+  
+  <text x="135" y="260" font-family="sans-serif" font-size="12" fill="#71717a">During the Q3 infrastructure audit, multiple microservices were</text>
+  <text x="135" y="280" font-family="sans-serif" font-size="12" fill="#71717a">monitored under peak load tests exceeding 10,000 req/sec.</text>
+
+  <rect x="130" y="300" width="410" height="65" rx="6" fill="url(#docGrad)" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="145" y="325" font-family="sans-serif" font-size="12" font-weight="bold" fill="#fbbf24">"System throughput decreased by 18% during Q3 due to</text>
+  <text x="145" y="345" font-family="sans-serif" font-size="12" font-weight="bold" fill="#fbbf24">primary database lock contention on write nodes."</text>
+
+  <text x="135" y="395" font-family="sans-serif" font-size="12" fill="#71717a">Subsequent mitigation steps involved introducing ChromaDB</text>
+  <text x="135" y="415" font-family="sans-serif" font-size="12" fill="#71717a">vector caching and decoupling async query paths.</text>
+
+  <rect x="135" y="445" width="400" height="170" rx="6" fill="#111117" stroke="#1f1f26"/>
+  <text x="150" y="475" font-family="monospace" font-size="11" fill="#f59e0b">CHROMA VECTOR EMBEDDING CHUNK #402</text>
+  <text x="150" y="500" font-family="monospace" font-size="10" fill="#a1a1aa">Source: Financial_Report_Q4.pdf | Page: 14 | Para: 3</text>
+  <text x="150" y="520" font-family="monospace" font-size="10" fill="#a1a1aa">Embedding Model: HuggingFace MiniLM-L6-v2 (384d)</text>
+  <text x="150" y="540" font-family="monospace" font-size="10" fill="#a1a1aa">Cosine Similarity Index: 0.942 (Top Match)</text>
+  <text x="150" y="585" font-family="monospace" font-size="11" fill="#34d399">STATUS: Grounded in Verified Source</text>
+
+  <rect x="610" y="115" width="510" height="560" rx="12" fill="#111116" stroke="#27272a" stroke-width="1.5"/>
+  <rect x="610" y="115" width="510" height="40" rx="12" fill="#17171e"/>
+  <line x1="610" y1="155" x2="1120" y2="155" stroke="#27272a"/>
+  <text x="630" y="140" font-family="monospace" font-size="11" font-weight="bold" fill="#f59e0b">GROQ LLAMA 3.3 70B // CONTEXT CHAT</text>
+
+  <rect x="690" y="180" width="410" height="60" rx="10" fill="#1c1c24" stroke="#27272a"/>
+  <text x="710" y="205" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">User Query:</text>
+  <text x="710" y="225" font-family="sans-serif" font-size="13" fill="#e4e4e7">"What were the main performance bottlenecks in Q3?"</text>
+
+  <rect x="630" y="260" width="470" height="280" rx="12" fill="#14141c" stroke="#d97706" stroke-width="1.5"/>
+  
+  <rect x="650" y="280" width="28" height="28" rx="6" fill="#f59e0b"/>
+  <text x="664" y="299" font-family="monospace" font-size="14" font-weight="bold" fill="#000000" text-anchor="middle">AI</text>
+  <text x="690" y="298" font-family="sans-serif" font-size="14" font-weight="bold" fill="#ffffff">DocuMind Assistant</text>
+
+  <text x="650" y="335" font-family="sans-serif" font-size="13" fill="#e4e4e7">Based on the uploaded document, the primary bottleneck</text>
+  <text x="650" y="358" font-family="sans-serif" font-size="13" fill="#e4e4e7">was an <tspan fill="#fbbf24" font-weight="bold">18% decrease in system throughput</tspan> caused</text>
+  <text x="650" y="381" font-family="sans-serif" font-size="13" fill="#e4e4e7">by primary database lock contention on write nodes.</text>
+
+  <rect x="650" y="415" width="220" height="32" rx="6" fill="#271e0c" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="760" y="436" font-family="monospace" font-size="11" font-weight="bold" fill="#fbbf24" text-anchor="middle">📍 Citation: Page 14, Para 3</text>
+
+  <rect x="650" y="465" width="430" height="55" rx="6" fill="#0c0c10"/>
+  <text x="665" y="488" font-family="monospace" font-size="10" fill="#71717a">LLM Model: Llama 3.3 70B Versatile (Groq)</text>
+  <text x="665" y="506" font-family="monospace" font-size="10" fill="#34d399">Latency: 480ms | Hallucination Score: 0.00%</text>
+
+  <rect x="630" y="565" width="470" height="50" rx="10" fill="#181820" stroke="#27272a"/>
+  <text x="650" y="595" font-family="sans-serif" font-size="13" fill="#71717a">Ask a follow-up question about loaded document...</text>
+  <rect x="1040" y="573" width="50" height="34" rx="6" fill="#f59e0b"/>
+  <text x="1065" y="595" font-family="sans-serif" font-size="14" font-weight="bold" fill="#000000" text-anchor="middle">➔</text>
+</svg>`);
+
 export const PROJECT_DATA: Project[] = [
   {
     id: "baltivoice",
     title: "BaltiVoice",
     subtitle: "WHISPER FINE-TUNING",
     category: "Speech AI & Fine-tuning",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC8mJfThC0RN8Mwq-LBXKw7fphvhdG8s7eHkYoUE0BYVVFPZKNoPTX8bbdHaQcjVM9VP-t_JZI8aODziN8PNBKjN0g3a0y0Loh8ipD0VxDzLkpYCf9uJFZrkWUgtg2ua-Ol3vZswFlM1oQC5xVf3MJ_zRXl9wew3o2xT3EZGX8ct1DM_h1FyD6-Ii1JyNaJi27T-P3IXiDGj9y0QUznn37FhNa3qubDS-mjWUkKzTPkstgOaWll6SD5Al4JXzaGgTjHYrzCU7UauZA",
+    image: BALTIVOICE_SVG,
     description: "An offline-first speech recognition engine fine-tuned on custom Whisper models to accurately transcribe regional Balti dialects with high fidelity. Implemented on hardware-constrained edge servers with custom compression techniques.",
     tech: ["Whisper AI", "PyTorch", "ONNX Runtime", "React", "Linux Edge"],
     link: "https://github.com/mohdali-dev",
@@ -89,11 +388,11 @@ quantizer.quantize(
   },
   {
     id: "omit-sanitizer",
-    title: "Omit | Secure Sanitizer",
-    subtitle: "PII MASKING ENGINE",
+    title: "Omit",
+    subtitle: "PII SANITIZATION ENGINE",
     category: "Security & NLP",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCUhuV8-FDu7_Y5Idyj1Bf2ybU5PsiP54K6HektP6liHqHeJRuNLqmipQyfUyRTSnxSw_XVv2HZJk80Ei35f7fF6SIQ2OgGoi_SfaO1gXDkd5x_dDelv6vPXRbymb2ALtav7Zrzqaj65AoASjGRusfbS_f4AFNsrqzFUgmC9vk0FUXzzWAz12Q0Skb-BS3wKryaDRsvjgmkSlROG9o9_ldQSQWO-6Q_yBwTsqCcPm3hIal_rGGokAYzqG9lYF9wNLqdh8mfA_V0ksk",
-    description: "An advanced, sub-millisecond PII Masking Engine designed to automatically intercept, catalog, and secure sensitive user data (social numbers, credit info, billing names) from high-volume transaction records prior to system storage.",
+    image: OMIT_SVG,
+    description: "Client-side, zero-trust PII scrubber for AI interactions — 100% local processing, zero data retention.",
     tech: ["Transformers", "Regex Regex Tokenizers", "FastAPI", "Next.js", "Docker"],
     link: "https://github.com/mohdali-dev/omit-sanitizer",
     metrics: ["Sub-5ms End-to-End Latency", "99.97% Accuracy Score", "FedRAMP Compliant Architecture"],
@@ -177,7 +476,7 @@ async def pii_sanitizer_middleware(request: Request, call_next):
     title: "Menu Scanner App",
     subtitle: "GEMINI + FIREBASE",
     category: "Computer Vision",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDX_Ug3T-m4LSa53A2SnK1yikcTgjH-JWMd7H7F5S3v4bATd9bsW3rQjZdySwt9EWKrI_2V6IShtpl50XpbhUdyXU1xgMLx8X-Ao2YcV4G86-ElGbbIo1UatknmbLwi0XDoFiU9Hm-4XOp1AcR43z1WCr7s-Q2X4kZzNO83nJuFCd4N3fc0e3mPrsYRnwKRBywjwN63yERLHkUSY4TzZY85zL5VZK8ME2ksUuXyodB6BMb1G4eTtvYuu6divtaREf1ap33OXhxEAUs",
+    image: MENU_SCANNER_SVG,
     description: "A highly intuitive web and mobile application that takes food menu snapshots, executes Gemini-based visual classification, analyzes ingredients, flags items based on customizable dietary allergen profiles, and persists configurations in real-time.",
     tech: ["Gemini Pro Vision", "Firebase Auth/Firestore", "React Mobile", "Tailwind CSS"],
     link: "https://github.com/mohdali-dev/menu-scanner",
@@ -279,7 +578,7 @@ export async function parseMenuImage(base64Image: string, userAllergens: string[
     title: "DocuMind AI",
     subtitle: "DOCUMENT INTELLIGENCE",
     category: "RAG & Document Intelligence",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBuEPmyGA0043OIheRHqu_74oOMZ8Gn6xdHLtyJMiG4h7gdsoohOYw-yECPz8n2EHJGL24_VvRTGnWVM8VuqrBYE8N3FijEDvowTvDt1Zbs3U-ElcfqR8d9y1d4H8EaSsrBRoLFaNVAZ6Tt0y9r3elY5HgccT5I6kTYnogfTHrqXMdEsJJhWUr2ZPyM9cKJH0CcwTvUc003_0Qp2tqXxqj4I0HIuUj864pwUCDAHc7H0P0LEpyCRNxLARsvXQYFXs1aBDm3S3IZfZ4",
+    image: DOCUMIND_SVG,
     description: "An enterprise-grade Document Intelligence platform converting static PDFs, DOCX, TXT, and CSV files into interactive, context-grounded AI conversations with zero hallucinations and traceable citations using Streamlit, LangChain, ChromaDB, and Groq Llama 3.3.",
     tech: ["Python", "Streamlit", "LangChain", "Groq Llama 3.3", "ChromaDB", "HuggingFace"],
     link: "https://github.com/mohdali-dev/DocuMind-AI",

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, useScroll, useSpring, MotionConfig } from "motion/react";
 import CustomCursor from "./components/CustomCursor";
 import Header from "./components/Header";
@@ -18,6 +18,7 @@ import Certifications from "./components/Certifications";
 import Testimonials from "./components/Testimonials";
 import ContactCTA from "./components/ContactCTA";
 import Footer from "./components/Footer";
+import NotFound from "./components/NotFound";
 
 function ScrollProgressBar() {
   const { scrollYProgress } = useScroll();
@@ -37,6 +38,33 @@ function ScrollProgressBar() {
 
 export default function App() {
   const [contactOpen, setContactOpen] = useState(false);
+  const [currentPath, setCurrentPath] = useState(() => window.location.pathname);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const handleGoHome = () => {
+    window.history.pushState({}, "", "/");
+    setCurrentPath("/");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Check if current URL path is unknown (anything other than root '/' or empty or hash anchor)
+  const is404 = currentPath !== "/" && currentPath !== "" && currentPath !== "/index.html";
+
+  if (is404) {
+    return (
+      <MotionConfig reducedMotion="user">
+        <CustomCursor />
+        <NotFound onGoHome={handleGoHome} />
+      </MotionConfig>
+    );
+  }
 
   return (
     <MotionConfig reducedMotion="user">

@@ -207,7 +207,7 @@ export default function Certifications() {
   return (
     <section
       id="certifications"
-      className="py-24 md:py-32 bg-black text-neutral-200 relative border-t border-neutral-900 overflow-hidden"
+      className="py-20 sm:py-28 md:py-36 lg:py-44 bg-neutral-950/60 text-neutral-200 relative border-t border-b border-neutral-900/80 overflow-hidden"
     >
       {/* Background ambient lighting */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-amber-600/5 rounded-full blur-[140px] pointer-events-none" />
@@ -219,7 +219,7 @@ export default function Certifications() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          className="mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6"
+          className="mb-14 md:mb-20 lg:mb-24 flex flex-col md:flex-row justify-between items-start md:items-end gap-6"
         >
           <div>
             <span className="font-mono text-xs uppercase tracking-[0.3em] text-amber-500 font-semibold mb-2 block flex items-center gap-2">
@@ -276,55 +276,60 @@ export default function Certifications() {
                 animate="visible"
                 exit={{ opacity: 0, scale: 0.95 }}
                 whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                className="group relative bg-neutral-950/80 border border-neutral-800/80 hover:border-amber-500/50 p-6 sm:p-7 rounded-lg flex flex-col justify-between transition-all duration-300 shadow-xl hover:shadow-[0_10px_30px_rgba(245,158,11,0.08)] overflow-hidden"
+                className="group relative bg-neutral-950/90 border-2 border-double border-neutral-800 hover:border-amber-500/60 p-7 sm:p-9 rounded-lg flex flex-col justify-between transition-all duration-300 shadow-xl hover:shadow-[0_12px_36px_rgba(245,158,11,0.12)] overflow-hidden min-h-[400px]"
                 data-cursor="verify"
               >
-                {/* Gold ambient corner highlight */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-bl-full pointer-events-none group-hover:bg-amber-500/10 transition-colors duration-500" />
+                {/* Formal watermark / credential seal icon background */}
+                <div className="absolute top-0 right-0 w-36 h-36 bg-amber-500/5 rounded-bl-full pointer-events-none group-hover:bg-amber-500/10 transition-colors duration-500 border-l border-b border-neutral-900/60" />
 
                 <div>
                   {/* Card Header Row */}
-                  <div className="flex items-start justify-between gap-3 mb-5">
+                  <div className="flex items-start justify-between gap-3 mb-6">
                     <IssuerBadge brand={cert.issuerBrand} />
 
-                    {/* Verified Certificate Pill */}
-                    <div className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-500/10 border border-amber-500/30 rounded text-amber-400 font-mono text-[10px] font-semibold tracking-wider">
-                      <ShieldCheck size={12} className="text-amber-400" />
+                    {/* Verified Certificate Double-Border Badge */}
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-950/40 border-2 border-double border-amber-500/60 rounded-sm text-amber-300 font-mono text-[10px] font-bold tracking-widest uppercase shadow-md shadow-amber-500/10">
+                      <ShieldCheck size={13} className="text-amber-400" />
                       <span>VERIFIED</span>
                     </div>
                   </div>
 
-                  {/* Title & Metadata */}
-                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-white mb-2 leading-snug group-hover:text-amber-300 transition-colors">
+                  {/* Issuing Institution - Prominent Visual Weight */}
+                  <div className="text-xs sm:text-sm font-mono font-extrabold text-amber-400 uppercase tracking-wider mb-2.5 flex items-center gap-2">
+                    <Award size={14} className="text-amber-500" />
+                    <span>{cert.issuer}</span>
+                  </div>
+
+                  {/* Document Title */}
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-white mb-3 leading-snug group-hover:text-amber-300 transition-colors">
                     {cert.title}
                   </h3>
 
-                  <div className="flex items-center gap-3 font-mono text-xs text-neutral-400 mb-4">
-                    <span>{cert.issuer}</span>
-                    <span className="w-1 h-1 rounded-full bg-neutral-700" />
-                    <span className="text-amber-500/90 font-medium">{cert.year}</span>
+                  {/* Secondary Metadata */}
+                  <div className="flex items-center gap-3 font-mono text-xs text-neutral-400 mb-6 pb-4 border-b border-neutral-900">
+                    <span className="text-neutral-300 font-semibold">Issued {cert.year}</span>
                     {cert.coursesCount && (
                       <>
                         <span className="w-1 h-1 rounded-full bg-neutral-700" />
-                        <span className="text-neutral-400 flex items-center gap-1">
-                          <BookOpen size={11} className="text-neutral-500" />
-                          {cert.coursesCount} Courses
+                        <span className="text-neutral-300 flex items-center gap-1 font-medium">
+                          <BookOpen size={12} className="text-amber-500/80" />
+                          {cert.coursesCount} Comprehensive Modules
                         </span>
                       </>
                     )}
                   </div>
 
-                  {/* Description */}
+                  {/* Description with comfortable whitespace */}
                   <p className="text-neutral-300 text-xs sm:text-sm font-light leading-relaxed mb-6">
                     {cert.description}
                   </p>
 
-                  {/* Skills tags */}
+                  {/* Verified Skill Competencies */}
                   <div className="flex flex-wrap gap-1.5 mb-8">
                     {cert.skills.map((skill) => (
                       <span
                         key={skill}
-                        className="px-2.5 py-1 bg-neutral-900/90 text-neutral-400 border border-neutral-800 rounded text-[10px] font-mono"
+                        className="px-2.5 py-1 bg-neutral-900/90 text-neutral-300 border border-neutral-800/90 rounded text-[10px] font-mono"
                       >
                         {skill}
                       </span>
@@ -332,18 +337,18 @@ export default function Certifications() {
                   </div>
                 </div>
 
-                {/* Footer Action */}
-                <div className="pt-4 border-t border-neutral-900/80 flex items-center justify-between">
-                  <span className="font-mono text-[10px] text-neutral-500 uppercase tracking-widest flex items-center gap-1">
-                    <CheckCircle2 size={11} className="text-emerald-500" />
-                    Coursera Verified
+                {/* Formal Credential Footer Action */}
+                <div className="pt-4 border-t border-neutral-900 flex items-center justify-between mt-2">
+                  <span className="font-mono text-[10px] text-neutral-400 uppercase tracking-widest flex items-center gap-1.5 font-semibold">
+                    <CheckCircle2 size={12} className="text-emerald-400" />
+                    Verified Credential Record
                   </span>
 
                   <a
                     href={cert.credentialUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-neutral-900 hover:bg-amber-500 text-neutral-200 hover:text-black border border-neutral-800 hover:border-amber-400 rounded text-xs font-mono font-semibold tracking-wider transition-all duration-300 shadow-md"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-neutral-900 hover:bg-amber-500 text-neutral-200 hover:text-black border border-neutral-800 hover:border-amber-400 rounded text-xs font-mono font-bold tracking-wider transition-all duration-300 shadow-md"
                   >
                     <span>View Credential</span>
                     <ExternalLink size={12} />

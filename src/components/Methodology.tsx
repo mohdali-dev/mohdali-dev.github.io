@@ -41,7 +41,7 @@ export default function Methodology() {
   };
 
   return (
-    <section ref={containerRef} id="methodology" className="bg-neutral-950 py-24 md:py-36 relative overflow-hidden border-b border-neutral-950">
+    <section ref={containerRef} id="methodology" className="bg-black py-20 sm:py-28 md:py-36 lg:py-44 relative overflow-hidden border-t border-b border-neutral-900/80">
       {/* Visual top subtle glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-44 bg-gradient-to-b from-black to-transparent pointer-events-none z-10" />
 
@@ -70,7 +70,7 @@ export default function Methodology() {
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         {/* Section Heading */}
-        <div className="max-w-2xl mx-auto text-center mb-24 md:mb-32">
+        <div className="max-w-2xl mx-auto text-center mb-16 md:mb-24 lg:mb-28">
           <span className="font-mono text-[9px] text-amber-500 uppercase tracking-[0.4em] font-medium block mb-4">
             The Methodology
           </span>

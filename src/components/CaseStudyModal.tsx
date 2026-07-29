@@ -213,6 +213,10 @@ export default function CaseStudyModal({ project, onClose }: CaseStudyModalProps
                     <img
                       src={project.image}
                       alt={project.title}
+                      loading="lazy"
+                      decoding="async"
+                      width="1200"
+                      height="675"
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       referrerPolicy="no-referrer"
                     />
