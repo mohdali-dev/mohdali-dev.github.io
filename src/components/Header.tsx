@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, Github } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "motion/react";
 
 interface HeaderProps {
@@ -69,7 +69,19 @@ export default function Header({ onContactOpen }: HeaderProps) {
           </nav>
 
           {/* CTA Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-3">
+            <motion.a
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              href="https://github.com/mohdali-dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub Profile"
+              title="GitHub Profile"
+              className="p-2 border border-neutral-800 hover:border-amber-500/60 text-neutral-300 hover:text-amber-400 bg-neutral-900/60 transition-colors rounded-full flex items-center justify-center"
+            >
+              <Github size={16} />
+            </motion.a>
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
@@ -115,7 +127,18 @@ export default function Header({ onContactOpen }: HeaderProps) {
               ))}
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-3">
+              <motion.a
+                whileTap={{ scale: 0.98 }}
+                href="https://github.com/mohdali-dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full py-3.5 border border-neutral-800 text-neutral-300 hover:text-amber-400 font-sans text-xs uppercase tracking-[0.25em] font-bold flex items-center justify-center gap-2"
+              >
+                <Github size={18} />
+                <span>GitHub Profile</span>
+              </motion.a>
               <motion.button
                 whileTap={{ scale: 0.98 }}
                 onClick={() => {
@@ -127,7 +150,7 @@ export default function Header({ onContactOpen }: HeaderProps) {
                 Let's Talk
               </motion.button>
               
-              <div className="text-center font-mono text-[9px] text-neutral-600 uppercase tracking-widest">
+              <div className="text-center font-mono text-[9px] text-neutral-600 uppercase tracking-widest pt-2">
                 Based in Lahore, Pakistan
               </div>
             </div>

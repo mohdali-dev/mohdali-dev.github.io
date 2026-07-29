@@ -70,8 +70,19 @@ export default function Footer() {
                 </a>
               </li>
               <li>
+                <a
+                  href="/Muhammad_Ali_CV.pdf"
+                  download="Muhammad_Ali_CV.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-amber-400 hover:text-amber-300 transition-colors flex items-center gap-1.5 font-medium"
+                >
+                  <span>Download CV (PDF)</span>
+                </a>
+              </li>
+              <li>
                 <a href="#work" className="hover:text-amber-400 transition-colors">
-                  Work & Case Studies
+                  Work &amp; Case Studies
                 </a>
               </li>
               <li>
